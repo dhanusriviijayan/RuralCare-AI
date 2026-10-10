@@ -1,0 +1,155 @@
+import React, { createContext, useContext, useState, useEffect } from 'react';
+
+const translations = {
+  en: {
+    brandName: "ArogyaGram",
+    tagline: "Rural Healthcare & AI Patient Management System",
+    navHome: "Home",
+    navServices: "Services",
+    navDoctors: "Find Doctors",
+    navTelemedicine: "Telemedicine",
+    navAiChecker: "AI Symptom Checker",
+    navAmbulance: "Emergency 108",
+    navLogin: "Sign In",
+    navRegister: "Register",
+    navDashboard: "Dashboard",
+    logout: "Log Out",
+    welcome: "Welcome to ArogyaGram Rural Health Portal",
+    heroTitle: "Empowering Rural Villages with Smart Healthcare & AI",
+    heroSub: "Connecting village clinics, patients, and top specialists with AI-guided triage, instant QR health cards, and 24/7 telemedicine.",
+    bookAppointment: "Book Appointment",
+    tryAiChecker: "Check Symptoms with AI",
+    emergencyCall: "Emergency Ambulance (108)",
+    statsPatients: "Rural Patients Served",
+    statsDoctors: "Verified Specialists",
+    statsVillages: "Villages Connected",
+    statsSatisfaction: "Patient Satisfaction",
+    recentActivities: "Recent Activities",
+    healthScore: "Health Score",
+    upcomingAppointments: "Upcoming Appointments",
+    prescriptions: "Digital Prescriptions",
+    qrHealthCard: "QR Code Health Card",
+    searchPlaceholder: "Search doctors, medicines, or health services...",
+    voiceSearch: "Voice Search Active",
+    speakNow: "Listening... Speak your query",
+    language: "Language",
+    selectRole: "Switch View Role",
+    rolePatient: "Patient",
+    roleDoctor: "Doctor",
+    roleAdmin: "Admin",
+    symptomCheckerTitle: "AI-Powered Symptom Checker & Health Triage",
+    riskPredictorTitle: "AI Health Risk Assessment Engine",
+    ambulanceTrackerTitle: "Real-Time Emergency Ambulance Live Tracking",
+    telemedicineTitle: "Virtual Doctor Video Consultation Studio",
+    pharmacyTitle: "Rural Pharmacy & Medicine Stock Tracker",
+    labReportsTitle: "Digital Lab Reports & Diagnostic Diagnostics",
+  },
+  ta: {
+    brandName: "ஆரோக்யகிராம்",
+    tagline: "கிராமப்புற சுகாதார மற்றும் AI நோயாளி நிர்வாக அமைப்பு",
+    navHome: "முகப்பு",
+    navServices: "சேவைகள்",
+    navDoctors: "மருத்துவர்கள்",
+    navTelemedicine: "டெலிமெடிசின்",
+    navAiChecker: "AI அறிகுறி சோதனை",
+    navAmbulance: "அவசர 108",
+    navLogin: "உள்நுழைக",
+    navRegister: "பதிவு செய்க",
+    navDashboard: "டாஷ்போர்டு",
+    logout: "வெளியேறு",
+    welcome: "ஆரோக்யகிராம் கிராமப்புற சுகாதார மையத்திற்கு வரவேற்கிறோம்",
+    heroTitle: "கிராமப்புற மக்களுக்கு நவீன AI சுகாதார சேவை",
+    heroSub: "கிராம மருத்துவமனைகள், நோயாளிகள் மற்றும் நிபுணர்களை AI வழிகாட்டுதல் மற்றும் 24/7 டெலிமெடிசின் மூலம் இணைக்கிறது.",
+    bookAppointment: "முன்பதிவு செய்ய",
+    tryAiChecker: "AI மூலம் பரிசோதிக்க",
+    emergencyCall: "அவசர ஆம்புலன்ஸ் (108)",
+    statsPatients: "பயனடைந்த நோயாளிகள்",
+    statsDoctors: "சிறப்பு மருத்துவர்கள்",
+    statsVillages: "இணைக்கப்பட்ட கிராமங்கள்",
+    statsSatisfaction: "நோயாளி திருப்தி",
+    recentActivities: "சமீபத்திய நடவடிக்கைகள்",
+    healthScore: "சுகாதார மதிப்பெண்",
+    upcomingAppointments: "அடுத்த கட்ட சந்திப்புகள்",
+    prescriptions: "டிஜிட்டல் மருந்துக் சீட்டு",
+    qrHealthCard: "QR சுகாதார அட்டை",
+    searchPlaceholder: "மருத்துவர்கள், மருந்துகள் தேடுக...",
+    voiceSearch: "குரல் தேடல் செயலில் உள்ளது",
+    speakNow: "பேசுங்கள்... கேட்கிறது",
+    language: "மொழி",
+    selectRole: "பங்கை மாற்றுக",
+    rolePatient: "நோயாளி",
+    roleDoctor: "மருத்துவர்",
+    roleAdmin: "நிர்வாகி",
+    symptomCheckerTitle: "AI நோய் அறிகுறி பகுப்பாய்வி",
+    riskPredictorTitle: "AI ஆரோக்கிய ஆபத்து மதிப்பீடு",
+    ambulanceTrackerTitle: "நேரலை ஆம்புலன்ஸ் கண்காணிப்பு",
+    telemedicineTitle: "வீடியோ மருத்துவ ஆலோசனை அறை",
+    pharmacyTitle: "மருந்தகம் மற்றும் இருப்பு கண்காணிப்பு",
+    labReportsTitle: "டிஜிட்டல் ஆய்வக அறிக்கைகள்",
+  },
+  hi: {
+    brandName: "आरोग्यग्राम",
+    tagline: "ग्रामीण स्वास्थ्य और एआई रोगी प्रबंधन प्रणाली",
+    navHome: "होम",
+    navServices: "सेवाएं",
+    navDoctors: "डॉक्टर खोजें",
+    navTelemedicine: "टेलीमेडिसिन",
+    navAiChecker: "AI लक्षण जांच",
+    navAmbulance: "आपात्कालीन 108",
+    navLogin: "साइन इन",
+    navRegister: "पंजीकरण",
+    navDashboard: "डैशबोर्ड",
+    logout: "लॉग आउट",
+    welcome: "आरोग्यग्राम ग्रामीण स्वास्थ्य पोर्टल में आपका स्वागत है",
+    heroTitle: "ग्रामीण भारत के लिए स्मार्ट एआई स्वास्थ्य सेवा",
+    heroSub: "गांव के क्लीनिकों, मरीजों और विशेषज्ञ डॉक्टरों को एआई ट्रियाज और 24/7 टेलीमेडिसिन से जोड़ना।",
+    bookAppointment: "अपॉइंटमेंट लें",
+    tryAiChecker: "AI से लक्षण जांचें",
+    emergencyCall: "इमरजेंसी एम्बुलेंस (108)",
+    statsPatients: "ग्रामीण मरीज",
+    statsDoctors: "विशेषज्ञ डॉक्टर",
+    statsVillages: "जुड़े हुए गांव",
+    statsSatisfaction: "संतुष्टि दर",
+    recentActivities: "हाल की गतिविधियां",
+    healthScore: "स्वास्थ्य स्कोर",
+    upcomingAppointments: "आगामी अपॉइंटमेंट",
+    prescriptions: "डिजिटल नुस्खे",
+    qrHealthCard: "क्यूआर स्वास्थ्य कार्ड",
+    searchPlaceholder: "डॉक्टर, दवाएं या सेवाएं खोजें...",
+    voiceSearch: "वॉयस सर्च सक्रिय",
+    speakNow: "बोलिए... सुन रहे हैं",
+    language: "भाषा",
+    selectRole: "रोल बदलें",
+    rolePatient: "मरीज",
+    roleDoctor: "डॉक्टर",
+    roleAdmin: "एडमिन",
+    symptomCheckerTitle: "एआई लक्षण चेकर और ट्रियाज",
+    riskPredictorTitle: "एआई स्वास्थ्य जोखिम मूल्यांकन",
+    ambulanceTrackerTitle: "लाइव एम्बुलेंस ट्रैकिंग",
+    telemedicineTitle: "वर्चुअल डॉक्टर वीडियो परामर्श",
+    pharmacyTitle: "ग्रामीण फार्मेसी स्टॉक",
+    labReportsTitle: "डिजिटल लैब रिपोर्ट्स",
+  }
+};
+
+const LanguageContext = createContext();
+
+export function LanguageProvider({ children }) {
+  const [lang, setLang] = useState(() => localStorage.getItem('arogya_lang') || 'en');
+
+  useEffect(() => {
+    localStorage.setItem('arogya_lang', lang);
+  }, [lang]);
+
+  const t = (key) => {
+    return translations[lang]?.[key] || translations['en']?.[key] || key;
+  };
+
+  return (
+    <LanguageContext.Provider value={{ lang, setLang, t }}>
+      {children}
+    </LanguageContext.Provider>
+  );
+}
+
+export const useLanguage = () => useContext(LanguageContext);
